@@ -2,14 +2,13 @@ package com.example.bean;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
+import org.springframework.stereotype.Repository;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAddBean {
-    private int id;
-    private String name;
-    private String password;
+@Repository
+public class SearchFlowBean {
+    private String flowInfo;
+    private String relaId;
 }

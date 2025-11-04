@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.mapper.SearchFlowByRelaIdMapper">
+    <select id="searchFlowByRelaIdMapper" parameterType="String" resultType="com.example.bean.SearchFlowByRelaIdBean">
+        SELECT a.flowInfo ,b.nodeInfo, a.relaId FROM flowInfo a INNER JOIN nodeInfo b  ON a.relaId = b.relaId WHERE a.relaId = #{relaId}  </select>
+    <select id="searchFlowByRelaIdSelfMapper" parameterType="String" resultType="com.example.bean.SearchFlowByRelaIdBean">
+        SELECT b.nodeSelfInfo, a.relaId FROM flowInfo a INNER JOIN nodeSelfInfo b  ON a.relaId = b.relaId WHERE a.relaId = #{relaId} </select>
+</mapper>
+

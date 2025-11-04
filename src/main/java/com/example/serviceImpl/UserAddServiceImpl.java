@@ -12,13 +12,6 @@ public class UserAddServiceImpl implements UserAddService {
     @Autowired
     private UserAddMapper userAddMapper;
 
-//    @Autowired
-//    private UserAddService userAddService;
-//
-//    @Override
-//    public void addFunc(String name, String password) {
-//        return userAddMapper.addMapper(name, password);
-//    }
     public String addFunc(String name, String password) {
         try {
             userAddMapper.addMapper(name, password);
@@ -30,14 +23,5 @@ public class UserAddServiceImpl implements UserAddService {
 //            throw new RuntimeException(e);
 
         }
-//        userAddMapper.addMapper(name, password);
-//        System.out.println("新增成功"+ userAddBean);
-//        if (userAddBean != null) {
-//            System.out.println("新增成功");
-//            return "success";
-//        } else {
-//            System.out.println("新增失败");
-//            return "fail";
-//        }
     }
 }
