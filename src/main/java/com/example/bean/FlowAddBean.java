@@ -10,12 +10,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Repository
-public class SearchFlowByRelaIdBean {
-    private String flowInfo ;
-    private String nodeId ;
-    private String nodeInfo ;
-    private String nodeSelfInfo ;
-    private String relaId ;
+public class FlowAddBean {
+    private String id ;
+    private String value ;
     private String crtTime ;
     private String uptTime ;
 }

@@ -1,4 +1,4 @@
-package com.example.response;
+package com.example.request;
 import com.example.bean.FlowAddBean;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,9 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Repository
-public class SearchFlowByRelaIdBeanResponse {
+public class FlowUpdateRequest {
+    private String relaId ;
     private String flowInfo ;
     private List<FlowAddBean> nodeInfo ;
     private List<String> nodeSelfInfo ;
-    private String relaId ;
 }

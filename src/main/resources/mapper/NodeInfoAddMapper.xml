@@ -4,8 +4,9 @@
 
 <!--新增-->
 <mapper namespace="com.example.mapper.NodeInfoAddMapper">
-<!-- 插入用户 -->
-<insert id="nodeInfoAddMapper" parameterType="String">
-    INSERT INTO nodeInfo (nodeInfo, relaId) VALUES ( #{nodeInfo}, #{relaId})
-</insert>
+    <!-- 插入用户 -->
+    <insert id="nodeInfoAddMapper" parameterType="String">
+        INSERT INTO nodeInfo (nodeId, nodeInfo, relaId, crtTime, uptTime) VALUES (#{nodeId}, #{nodeInfo}, #{relaId},
+        #{crtTime}, #{uptTime})
+    </insert>
 </mapper>

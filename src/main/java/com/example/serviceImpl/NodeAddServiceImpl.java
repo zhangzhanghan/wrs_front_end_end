@@ -5,6 +5,7 @@ import com.example.mapper.NodeInfoAddMapper;
 import com.example.mapper.NodeSelfInfoAddMapper;
 import com.example.request.NodeAddRequest;
 import com.example.service.NodeAddService;
+import com.example.utils.SerialNumberGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,22 +26,21 @@ public class NodeAddServiceImpl implements NodeAddService {
             SerialNumberGenerator serialNumberGenerator = new SerialNumberGenerator();
             String relaId =  serialNumberGenerator.generateSerialNumber();
             String flowInfo = nodeAddRequest.getFlowInfo();
-            flowAddMapper.flowAddMapper(flowInfo,relaId); //新增流程
+//            flowAddMapper.flowAddMapper(flowInfo,relaId); //新增流程
 
            List<String> nodeInfoList =  nodeAddRequest.getNodeInfo();
             for (int i = 0; i < nodeInfoList.size(); i++) {
                 String nodeInfo = nodeInfoList.get(i);
-                nodeInfoAddMapper.nodeInfoAddMapper(nodeInfo, relaId); //新增流程
+                String xxx = "79274324";
+//                nodeInfoAddMapper.nodeInfoAddMapper(xxx,nodeInfo, relaId); //新增流程
             }
             List<String> NodeSelfInfoList =  nodeAddRequest.getNodeSelfInfo();
             for (int i = 0; i < NodeSelfInfoList.size(); i++) {
                 String nodeSelfInfo = NodeSelfInfoList.get(i);
-                nodeSelfInfoAddMapper.nodeSelfInfoAddMapper(nodeSelfInfo, relaId); //新增流程
+//                nodeSelfInfoAddMapper.nodeSelfInfoAddMapper(nodeSelfInfo, relaId); //新增流程
             }
-            System.out.println("新增成功"+  flowInfo);
             return "success";
         } catch (Exception e) {
-            System.out.println("新增失败"+e.getMessage());
             return "fail";
 //            throw new RuntimeException(e);
         }

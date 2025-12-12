@@ -1,5 +1,7 @@
 package com.example.controller;
 import com.example.bean.*;
+import com.example.request.FlowAddRequest;
+import com.example.request.FlowUpdateRequest;
 import com.example.request.NodeAddRequest;
 import com.example.request.SearchFlowByRelaIdRequest;
 import com.example.response.SearchFlowByRelaIdBeanResponse;
@@ -34,6 +36,23 @@ public class LoginController {
 
     @Autowired
     private SearchFlowByRelaIdmpl searchFlowByRelaIdmpl;
+
+    @Autowired
+    private FlowAddServiceImpl flowAddServiceImpl;
+
+    @Autowired
+    private FlowUpdateServiceImpl flowUpdateServiceImpl;
+
+// 工作流新增
+    @RequestMapping(value = "/dev-api/flowAdd")
+    public String flowAdd(@RequestBody FlowAddRequest flowAddRequest) {
+        return flowAddServiceImpl.flowAddFunc(flowAddRequest);
+    }
+    // 工作流更新
+    @RequestMapping(value = "/dev-api/flowUpdate")
+    public String flowUpdate(@RequestBody FlowUpdateRequest FlowUpdateRequest) {
+        return flowUpdateServiceImpl.flowUpdateFunc(FlowUpdateRequest);
+    }
 
     @RequestMapping(value = "/dev-api/add")
     public String loginRequest(@RequestBody NodeAddRequest nodeAddRequest) {

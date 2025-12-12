@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--删除-->
+<mapper namespace="com.example.mapper.DeleteMapper">
+    <delete id="deleteFlowMapper" parameterType="String">
+        delete from flowInfo where relaId = #{relaId}
+    </delete>
+    <delete id="deleteNodeInfoMapper" parameterType="String">
+        delete from nodeInfo where relaId = #{relaId}
+    </delete>
+    <delete id="deleteNodeSelfInfoMapper" parameterType="String">
+        delete from nodeSelfInfo where relaId = #{relaId}
+    </delete>
+</mapper>

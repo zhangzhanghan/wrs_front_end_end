@@ -4,8 +4,13 @@
 
 <mapper namespace="com.example.mapper.SearchFlowByRelaIdMapper">
     <select id="searchFlowByRelaIdMapper" parameterType="String" resultType="com.example.bean.SearchFlowByRelaIdBean">
-        SELECT a.flowInfo ,b.nodeInfo, a.relaId FROM flowInfo a INNER JOIN nodeInfo b  ON a.relaId = b.relaId WHERE a.relaId = #{relaId}  </select>
-    <select id="searchFlowByRelaIdSelfMapper" parameterType="String" resultType="com.example.bean.SearchFlowByRelaIdBean">
-        SELECT b.nodeSelfInfo, a.relaId FROM flowInfo a INNER JOIN nodeSelfInfo b  ON a.relaId = b.relaId WHERE a.relaId = #{relaId} </select>
+        SELECT a.flowInfo ,b.nodeId, b.nodeInfo, a.relaId, b.crtTime, b.uptTime FROM flowInfo a INNER JOIN nodeInfo b ON a.relaId = b.relaId
+        WHERE a.relaId = #{relaId}
+    </select>
+    <select id="searchFlowByRelaIdSelfMapper" parameterType="String"
+            resultType="com.example.bean.SearchFlowByRelaIdBean">
+        SELECT b.nodeSelfInfo, a.relaId FROM flowInfo a INNER JOIN nodeSelfInfo b ON a.relaId = b.relaId WHERE a.relaId
+        = #{relaId}
+    </select>
 </mapper>
 

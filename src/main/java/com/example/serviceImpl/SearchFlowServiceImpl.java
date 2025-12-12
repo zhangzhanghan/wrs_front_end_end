@@ -20,7 +20,6 @@ import java.util.List;
 
     public  List<SearchFlowBean> searchFlowFunc() {
         List<SearchFlowBean> searchFlowBeanList = searchFlowMapper.searchFlowMapper();
-        System.out.println("查询成功"+ searchFlowBeanList);
         if (searchFlowBeanList.size() > 0) {
             System.out.println("查询成功");
             return searchFlowBeanList;
