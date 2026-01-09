@@ -1,10 +1,14 @@
 package com.example.serviceImpl;
 //service层对DAO进行封装，专注于业务逻辑
 
-import com.example.bean.FlowAddBean;
-import com.example.bean.SearchFlowByRelaIdBean;
-import com.example.response.SearchFlowByRelaIdBeanResponse;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.example.bean.FlowInfoTable;
+import com.example.request.FlowAddRequest.FlowObjectBean;
+import com.example.response.SearchFlowByRelaIdRes.SearchFlowByRelaIdResponse;
 import com.example.mapper.SearchFlowByRelaIdMapper;
+import com.example.response.SearchFlowByRelaIdRes.SearchFlowByRelaIdResFlowInfo;
+import com.example.response.SearchFlowByRelaIdRes.SearchFlowByRelaIdResNodeSelfInfo;
 import com.example.service.SearchFlowByRelaIdService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,33 +22,41 @@ public class SearchFlowByRelaIdmpl implements SearchFlowByRelaIdService {
     @Autowired
     private SearchFlowByRelaIdMapper searchFlowByRelaIdMapper;
 
-    public SearchFlowByRelaIdBeanResponse SearchFlowByRelaIdFunc(String relaId) {
-        List<SearchFlowByRelaIdBean> searchFlowByRelaIdBeanList = searchFlowByRelaIdMapper.searchFlowByRelaIdMapper(relaId);
-        SearchFlowByRelaIdBeanResponse searchFlowByRelaIdBeanResponse = new SearchFlowByRelaIdBeanResponse();
-        searchFlowByRelaIdBeanResponse.setFlowInfo(searchFlowByRelaIdBeanList.get(0).getFlowInfo()); //赋值flowInfo
-        searchFlowByRelaIdBeanResponse.setRelaId(searchFlowByRelaIdBeanList.get(0).getRelaId()); //赋值RelaId
-        List<FlowAddBean> nodeInfoTmp = new ArrayList<>();
-        for (int i = 0; i < searchFlowByRelaIdBeanList.size(); i++) {
-            String nodeId = searchFlowByRelaIdBeanList.get(i).getNodeId();
-            String nodeInfo = searchFlowByRelaIdBeanList.get(i).getNodeInfo();
-            String crtTime = searchFlowByRelaIdBeanList.get(i).getCrtTime();
-            String uptTime = searchFlowByRelaIdBeanList.get(i).getUptTime();
-            FlowAddBean flowAddBean = new FlowAddBean();
-            flowAddBean.setId(nodeId);
-            flowAddBean.setValue(nodeInfo);
-            flowAddBean.setCrtTime(crtTime);
-            flowAddBean.setUptTime(uptTime);
-            nodeInfoTmp.add(flowAddBean);
-        }
-        searchFlowByRelaIdBeanResponse.setNodeInfo(nodeInfoTmp);  // 赋值nodeInfo
+    public SearchFlowByRelaIdResponse searchFlowByRelaIdFunc(String relaId) {
 
-        List<SearchFlowByRelaIdBean> searchFlowByRelaIdBeanSelfList = searchFlowByRelaIdMapper.searchFlowByRelaIdSelfMapper(relaId);
-        List<String> nodeSelfInfoTmp = new ArrayList<>();
-        for (int i = 0; i < searchFlowByRelaIdBeanSelfList.size(); i++) {
-            nodeSelfInfoTmp.add(searchFlowByRelaIdBeanSelfList.get(i).getNodeSelfInfo());
-        }
-        searchFlowByRelaIdBeanResponse.setNodeSelfInfo(nodeSelfInfoTmp);
+        SearchFlowByRelaIdResponse searchFlowByRelaIdResponse = new SearchFlowByRelaIdResponse(); //总输出
+        List<FlowInfoTable> flowInfoTableList = searchFlowByRelaIdMapper.searchFlowByRelaIdFlowInfoMapper(relaId);
 
-        return searchFlowByRelaIdBeanResponse;
+        List<SearchFlowByRelaIdResFlowInfo> searchFlowByRelaIdResFlowInfoList = new ArrayList<>();
+        List<SearchFlowByRelaIdResNodeSelfInfo> searchFlowByRelaIdResNodeSelfInfoList = new ArrayList<>();
+        FlowObjectBean flowObjectBean = new FlowObjectBean();
+
+        for (int i = 0; i < flowInfoTableList.size(); i++) {
+            JSONObject jsonObject = JSON.parseObject(flowInfoTableList.get(i).getFlowInfo());
+            flowObjectBean = jsonObject.getJSONObject("flowInfo").toJavaObject(FlowObjectBean.class);
+            searchFlowByRelaIdResNodeSelfInfoList = (List<SearchFlowByRelaIdResNodeSelfInfo>) jsonObject.get("nodeSelfInfo");
+            searchFlowByRelaIdResFlowInfoList = (List<SearchFlowByRelaIdResFlowInfo>) jsonObject.get("edges");
+        }
+
+//        for (int i = 0; i < searchFlowByRelaIdResFlowInfoList.size(); i++) {
+//            String adc = searchFlowByRelaIdResFlowInfoList.get(i).getId();
+//            SearchFlowByRelaIdResNodeSelfInfo searchFlowByRelaIdResNodeSelfInfo = JSON.toJavaObject(jsonObject, SearchFlowByRelaIdResNodeSelfInfo.class);
+//        }
+
+        searchFlowByRelaIdResponse.setRelaId(relaId);
+        searchFlowByRelaIdResponse.setFlowObject(flowObjectBean);
+        searchFlowByRelaIdResponse.setFlowInfo(searchFlowByRelaIdResFlowInfoList); //边界信息
+
+
+//        List<NodeSelfInfoTable> nodeSelfInfoTableList = searchFlowByRelaIdMapper.searchFlowByRelaIdSelfMapper(relaId);
+//        List<SearchFlowByRelaIdResNodeSelfInfo> searchFlowByRelaIdResNodeSelfInfoList = new ArrayList<>();
+//        for (int i = 0; i < nodeSelfInfoTableList.size(); i++) {
+//            JSONObject jsonObject = JSON.parseObject(nodeSelfInfoTableList.get(i).getNodeSelfInfo());
+//            SearchFlowByRelaIdResNodeSelfInfo searchFlowByRelaIdResNodeSelfInfo = JSON.toJavaObject(jsonObject, SearchFlowByRelaIdResNodeSelfInfo.class);
+//            searchFlowByRelaIdResNodeSelfInfoList.add(searchFlowByRelaIdResNodeSelfInfo);
+//        }
+
+        searchFlowByRelaIdResponse.setNodeSelfInfo(searchFlowByRelaIdResNodeSelfInfoList); //节点和数据信息
+        return searchFlowByRelaIdResponse;
     }
 }

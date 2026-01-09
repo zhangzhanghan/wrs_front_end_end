@@ -21,7 +21,7 @@ public class NodeAddServiceImpl implements NodeAddService {
     @Autowired
     private FlowAddMapper flowAddMapper;
 
-    public String NodeAddFunc(NodeAddRequest nodeAddRequest) {
+    public String nodeAddFunc(NodeAddRequest nodeAddRequest) {
         try {
             SerialNumberGenerator serialNumberGenerator = new SerialNumberGenerator();
             String relaId =  serialNumberGenerator.generateSerialNumber();

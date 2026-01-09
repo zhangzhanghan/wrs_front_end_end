@@ -1,18 +1,21 @@
 package com.example.bean;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Repository
-public class FlowAddBean {
+@Getter
+@Setter
+@ToString
+public class FlowInfoTable {
     private String id ;
-    private String value ;
+    private String flowInfo ;
+    private String relaId ;
     private String crtTime ;
     private String uptTime ;
 }

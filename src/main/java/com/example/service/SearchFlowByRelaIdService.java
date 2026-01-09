@@ -1,6 +1,6 @@
 package com.example.service;
-import com.example.response.SearchFlowByRelaIdBeanResponse;
+import com.example.response.SearchFlowByRelaIdRes.SearchFlowByRelaIdResponse;
 
 public interface SearchFlowByRelaIdService {
-    SearchFlowByRelaIdBeanResponse SearchFlowByRelaIdFunc(String  relaId);
+    SearchFlowByRelaIdResponse searchFlowByRelaIdFunc(String  relaId);
 }

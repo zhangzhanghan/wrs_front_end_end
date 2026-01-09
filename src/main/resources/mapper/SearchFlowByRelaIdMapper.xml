@@ -3,14 +3,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="com.example.mapper.SearchFlowByRelaIdMapper">
-    <select id="searchFlowByRelaIdMapper" parameterType="String" resultType="com.example.bean.SearchFlowByRelaIdBean">
-        SELECT a.flowInfo ,b.nodeId, b.nodeInfo, a.relaId, b.crtTime, b.uptTime FROM flowInfo a INNER JOIN nodeInfo b ON a.relaId = b.relaId
-        WHERE a.relaId = #{relaId}
+    <select id="searchFlowByRelaIdFlowInfoMapper" parameterType="String" resultType="com.example.bean.FlowInfoTable">
+        SELECT flowInfo FROM flowInfo WHERE relaId = #{relaId}
+    </select>
+    <select id="searchFlowByRelaIdNodeInfoMapper" parameterType="String" resultType="com.example.bean.NodeInfoTable">
+        SELECT nodeId,nodeInfo,crtTime,uptTime FROM nodeInfo WHERE relaId = #{relaId}
     </select>
     <select id="searchFlowByRelaIdSelfMapper" parameterType="String"
-            resultType="com.example.bean.SearchFlowByRelaIdBean">
-        SELECT b.nodeSelfInfo, a.relaId FROM flowInfo a INNER JOIN nodeSelfInfo b ON a.relaId = b.relaId WHERE a.relaId
-        = #{relaId}
+            resultType="com.example.bean.NodeSelfInfoTable">
+        SELECT nodeSelfInfo FROM nodeSelfInfo WHERE relaId = #{relaId}
     </select>
 </mapper>
 

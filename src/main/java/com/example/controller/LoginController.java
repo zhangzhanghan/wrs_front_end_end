@@ -1,17 +1,21 @@
 package com.example.controller;
+
 import com.example.bean.*;
-import com.example.request.FlowAddRequest;
+import com.example.request.FlowAddRequest.FlowAddRequest;
 import com.example.request.FlowUpdateRequest;
 import com.example.request.NodeAddRequest;
-import com.example.request.SearchFlowByRelaIdRequest;
-import com.example.response.SearchFlowByRelaIdBeanResponse;
+import com.example.request.SearchFlowByRelaIdRequest.SearchFlowByRelaIdRequest;
+import com.example.response.SearchFlowByRelaIdRes.SearchFlowByRelaIdResponse;
+import com.example.response.SearchFlowRes.SearchFlowResFlowInfoRes;
 import com.example.serviceImpl.*;
+import com.example.utils.BusinessContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class LoginController {
@@ -43,11 +47,26 @@ public class LoginController {
     @Autowired
     private FlowUpdateServiceImpl flowUpdateServiceImpl;
 
-// 工作流新增
+    @Autowired
+    private DealFlowImpl dealFlowImpl;
+
+    //前端调用处理工作流
+    @RequestMapping(value = "/dev-api/dealFlow")
+    public Map<String, Object> dealFlow(@RequestBody Map<String, Object> request) {
+        System.out.println("request" + request);
+        BusinessContext ctx = new BusinessContext();
+        ctx.setHeadMap((Map)request.get("head"));
+        ctx.setParamMap((Map)request.get("body"));
+
+        return dealFlowImpl.dealFlowFunc(ctx);
+    }
+
+    // 工作流新增
     @RequestMapping(value = "/dev-api/flowAdd")
     public String flowAdd(@RequestBody FlowAddRequest flowAddRequest) {
         return flowAddServiceImpl.flowAddFunc(flowAddRequest);
     }
+
     // 工作流更新
     @RequestMapping(value = "/dev-api/flowUpdate")
     public String flowUpdate(@RequestBody FlowUpdateRequest FlowUpdateRequest) {
@@ -56,16 +75,18 @@ public class LoginController {
 
     @RequestMapping(value = "/dev-api/add")
     public String loginRequest(@RequestBody NodeAddRequest nodeAddRequest) {
-        return nodeAddServiceImpl.NodeAddFunc(nodeAddRequest);
+        return nodeAddServiceImpl.nodeAddFunc(nodeAddRequest);
     }
+
     @RequestMapping(value = "/dev-api/searchFlowService")
-    public List<SearchFlowBean> searchFlowService(@RequestBody String searchFlowServiceRequest) {
+    public List<SearchFlowResFlowInfoRes> searchFlowService(@RequestBody String searchFlowServiceRequest) {
         return searchFlowServiceImpl.searchFlowFunc();
     }
+
     @RequestMapping(value = "/dev-api/SearchFlowByRelaId")
-    public SearchFlowByRelaIdBeanResponse SearchFlowByRelaId(@RequestBody SearchFlowByRelaIdRequest searchFlowByRelaIdRequest) {
+    public SearchFlowByRelaIdResponse SearchFlowByRelaId(@RequestBody SearchFlowByRelaIdRequest searchFlowByRelaIdRequest) {
         String relaId = searchFlowByRelaIdRequest.getRelaId();
-        return searchFlowByRelaIdmpl.SearchFlowByRelaIdFunc(relaId);
+        return searchFlowByRelaIdmpl.searchFlowByRelaIdFunc(relaId);
     }
 
 ////////////////////////////////////////////////////////

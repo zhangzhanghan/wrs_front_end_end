@@ -1,8 +1,5 @@
-package com.example.request;
-import com.example.bean.FlowInfoTable;
-import com.example.request.FlowAddRequest.FlowInfoBean;
+package com.example.response.SearchFlowByRelaIdRes;
 import com.example.request.FlowAddRequest.FlowObjectBean;
-import com.example.request.FlowAddRequest.NodeSelfInfoBean;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,9 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Repository
-public class FlowUpdateRequest {
+public class SearchFlowByRelaIdResponse {
     private String relaId ;
     private FlowObjectBean flowObject;
-    private List<FlowInfoBean> flowInfo;
-    private List<NodeSelfInfoBean> nodeSelfInfo;
+    private List<SearchFlowByRelaIdResFlowInfo> flowInfo;
+    private List<SearchFlowByRelaIdResNodeSelfInfo> nodeSelfInfo;
 }

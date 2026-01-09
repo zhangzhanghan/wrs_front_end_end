@@ -1,5 +1,5 @@
-package com.example.request;
-import com.example.bean.FlowAddBean;
+package com.example.bean;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,8 +11,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Repository
-public class FlowAddRequest {
-    private String flowInfo ;
-    private List<FlowAddBean> nodeInfo ;
-    private List<String> nodeSelfInfo ;
+public class NodeInfoTable {
+    private String id;
+    private String nodeId;
+    private String nodeInfo;
+    private String relaId;
+    private String crtTime;
+    private String uptTime;
 }

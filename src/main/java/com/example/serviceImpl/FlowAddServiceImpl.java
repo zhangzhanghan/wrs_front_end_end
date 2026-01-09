@@ -1,11 +1,12 @@
 package com.example.serviceImpl;
 //service层对DAO进行封装，专注于业务逻辑
 
-import com.example.bean.FlowAddBean;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.mapper.FlowAddMapper;
 import com.example.mapper.NodeInfoAddMapper;
 import com.example.mapper.NodeSelfInfoAddMapper;
-import com.example.request.FlowAddRequest;
+import com.example.request.FlowAddRequest.*;
 import com.example.service.FlowAddService;
 import com.example.utils.SerialNumberGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,19 +30,35 @@ public class FlowAddServiceImpl implements FlowAddService {
             String relaId = serialNumberGenerator.generateSerialNumber();
             String crtTime = serialNumberGenerator.getCurrentTime();
             String uptTime = crtTime;
-            String flowInfo = flowAddRequest.getFlowInfo();
-            flowAddMapper.flowAddMapper(flowInfo, relaId, crtTime, uptTime); //新增流程
-            List<FlowAddBean> nodeInfoList = flowAddRequest.getNodeInfo();
-            for (int i = 0; i < nodeInfoList.size(); i++) {
-                FlowAddBean flowAddBean = nodeInfoList.get(i);
-                String nodeId = flowAddBean.getId();
-                String nodeInfo = flowAddBean.getValue();
-                nodeInfoAddMapper.nodeInfoAddMapper(nodeId, nodeInfo, relaId, crtTime, uptTime); //节点输入信息
+
+            List<FlowInfoBean> flowInfoBeanList = flowAddRequest.getFlowInfo();
+            List<NodeSelfInfoBean> nodeSelfInfoBeanList = flowAddRequest.getNodeSelfInfo();
+
+            for (int i = 0; i < flowInfoBeanList.size(); i++) {
+                FlowInfoBean flowInfoBean = flowInfoBeanList.get(i);
+                String flowInfoBeanId = flowInfoBean.getId();
+                String nodeId = flowInfoBeanId.split("-")[0];
+                for (int j = 0; j < nodeSelfInfoBeanList.size(); j++) {
+                    if (nodeId.equals(nodeSelfInfoBeanList.get(j).getId())) {
+                        flowInfoBean.setType(nodeSelfInfoBeanList.get(j).getType());
+                        continue;
+                    }
+                }
             }
-            List<String> NodeSelfInfoList = flowAddRequest.getNodeSelfInfo();
-            for (int i = 0; i < NodeSelfInfoList.size(); i++) {
-                String nodeSelfInfo = NodeSelfInfoList.get(i);
-                nodeSelfInfoAddMapper.nodeSelfInfoAddMapper(nodeSelfInfo, relaId, crtTime, uptTime); //新增流程
+            String flowName = flowAddRequest.getFlowObject().getEngName();
+
+            FlowAddProcessBean flowAddProcessBean = new FlowAddProcessBean();
+            flowAddProcessBean.setFlowInfo(flowAddRequest.getFlowObject());
+            flowAddProcessBean.setEdges(flowInfoBeanList);
+            flowAddProcessBean.setNodeSelfInfo(nodeSelfInfoBeanList);
+//处理流程
+            String flowAddProcessBeanString = JSONObject.toJSONString(flowAddProcessBean);
+            flowAddMapper.flowAddMapper(flowAddProcessBeanString, relaId, crtTime, uptTime, flowName); //1.新增流程
+
+//            处理节点本身的数据
+            for (int i = 0; i < nodeSelfInfoBeanList.size(); i++) {
+                String nodeSelfInfo = JSONObject.toJSONString(nodeSelfInfoBeanList.get(i));
+                nodeSelfInfoAddMapper.nodeSelfInfoAddMapper(nodeSelfInfo, relaId, crtTime, uptTime); //3.节点本身数据
             }
             return "success";
         } catch (Exception e) {
